@@ -1,13 +1,32 @@
 import cv2
-import matplotlib.pyplot as plt
 
+# initialize the webcam
+cap = cv2.VideoCapture(0)
 
-img = cv2.imread('test.jpg')
-print(img.shape)
-x_min,x_max = 50,550
-y_min,y_max = 250, 640
-# cv2.rectangle(img, pt1=(50,250), pt2=(550,640), color=(0,255,0), thickness=5)
-temp = img[y_min:y_max, x_min:x_max].copy()
-# cv2.rectangle(img, pt1=(x_min,y_min), pt2=(x_max,y_max), color=(0,255,0), thickness=10)
-plt.imshow(img)
-plt.show()
+# initialize the counter
+counter = 10
+
+# start capturing frames from the webcam
+while True:
+    # grab the current frame
+    ret, frame = cap.read()
+
+    # check if the frame is returned
+    if not ret:
+        break
+    
+    cv2.waitKey(1000)
+    # increment the counter
+    counter -= 1
+
+    # display the current frame with the counter value
+    cv2.putText(frame, str(counter), (550, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
+    cv2.imshow("Frame", frame)
+
+    # break the loop if 'q' key is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# release the webcam and close the window
+cap.release()
+cv2.destroyAllWindows()

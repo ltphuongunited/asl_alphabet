@@ -19,14 +19,16 @@ class_names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
 
 def generate_frames():
     i = 0
+    counter = 10
     global start_button
     while start_button:
         
         ## read the camera frame
         success,frame=camera.read()
         i += 1
-    
-      
+
+        if counter < 0: counter = 10
+
         frame = cv2.flip(frame,1)
 
         if not success:
@@ -37,7 +39,10 @@ def generate_frames():
         temp = frame[y_min:y_max, x_min:x_max].copy()
         cv2.rectangle(frame, pt1=(x_min,y_min), pt2=(x_max,y_max), color=(0,255,0), thickness=6)
 
+        cv2.putText(frame, str(counter), (550, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
+        
         if (i % 100 == 0):
+            counter -= 1   
             with open("static/data/log.json", "r") as jsonFile:
                 data = json.load(jsonFile)
             print(i)
@@ -47,7 +52,7 @@ def generate_frames():
 
             data["predict_label"],data["predict_prob"] = predict(temp)
             
-            if data["predict_label"] == 'nothing':
+            if data["predict_label"] == 'nothing' or data["predict_prob"] < 0.7:
                 continue
             elif data["predict_label"] == 'del':
                 data["buffer_text"] = data["buffer_text"][:-1]
@@ -143,8 +148,6 @@ def predict(img):
     input_arr = np.array([img])
     predict = model.predict(input_arr)
     prob = round(np.max(predict),2)
-    if prob < 0.7:
-        return '',str(prob)
 
     result = class_names[np.argmax(predict)]
     return result, str(prob)
