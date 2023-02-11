@@ -1,10 +1,11 @@
 import cv2
+import time
 
 # initialize the webcam
 cap = cv2.VideoCapture(0)
 
-# initialize the counter
-counter = 10
+# get the start time
+start_time = cv2.getTickCount()
 
 # start capturing frames from the webcam
 while True:
@@ -14,19 +15,17 @@ while True:
     # check if the frame is returned
     if not ret:
         break
-    
-    cv2.waitKey(1000)
-    # increment the counter
-    counter -= 1
 
-    # display the current frame with the counter value
-    cv2.putText(frame, str(counter), (550, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
+    # calculate the number of frames per second
+    fps = cv2.getTickFrequency() / (cv2.getTickCount() - start_time)
+
+    # display the current frame with the fps value
+    cv2.putText(frame, "FPS: {:.2f}".format(fps), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
     cv2.imshow("Frame", frame)
+
+    # update the start time
+    start_time = cv2.getTickCount()
 
     # break the loop if 'q' key is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-# release the webcam and close the window
-cap.release()
-cv2.destroyAllWindows()

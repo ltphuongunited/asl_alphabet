@@ -27,7 +27,7 @@ def generate_frames():
         success,frame=camera.read()
         i += 1
 
-        if counter < 0: counter = 10
+        if counter == 0: counter = 10
 
         frame = cv2.flip(frame,1)
 
@@ -41,8 +41,9 @@ def generate_frames():
 
         cv2.putText(frame, str(counter), (550, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
         
-        if (i % 100 == 0):
-            counter -= 1   
+        if i % 30 == 0: counter -= 1
+        
+        if (i % 300 == 0):
             with open("static/data/log.json", "r") as jsonFile:
                 data = json.load(jsonFile)
             print(i)
@@ -53,12 +54,13 @@ def generate_frames():
             data["predict_label"],data["predict_prob"] = predict(temp)
             
             if data["predict_label"] == 'nothing' or data["predict_prob"] < 0.7:
-                continue
+                pass
             elif data["predict_label"] == 'del':
                 data["buffer_text"] = data["buffer_text"][:-1]
             else:
                 data["buffer_text"] += data["predict_label"]
 
+            data["predict_prob"] = str(data["predict_prob"])
             print(data)
             with open("static/data/log.json", "w") as jsonFile:
                 json.dump(data, jsonFile)
@@ -150,7 +152,7 @@ def predict(img):
     prob = round(np.max(predict),2)
 
     result = class_names[np.argmax(predict)]
-    return result, str(prob)
+    return result, prob
 
 
 
