@@ -5,4 +5,5 @@ asl_alphabet_test/
 asl_alphabet_train/
 asl_alphabet_val/
 original/
-Phone.
+Phone/
+asl_alphabet_train.zip

@@ -14,12 +14,12 @@ start_button = False
 global save_button
 save_button = False
 
-model = keras.models.load_model('model.h5')
+model = keras.models.load_model('best_model.h5')
 class_names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'del', 'nothing', 'space']
 
 def generate_frames():
     i = 0
-    counter = 10
+    counter = 7
     global start_button
     while start_button:
         
@@ -27,7 +27,7 @@ def generate_frames():
         success,frame=camera.read()
         i += 1
 
-        if counter == 0: counter = 10
+        if counter == 0: counter = 7
 
         frame = cv2.flip(frame,1)
 
@@ -43,12 +43,12 @@ def generate_frames():
         
         if i % 30 == 0: counter -= 1
         
-        if (i % 300 == 0):
+        if (i % 210 == 0):
             with open("static/data/log.json", "r") as jsonFile:
                 data = json.load(jsonFile)
             print(i)
 
-            temp = cv2.resize(temp, (256, 256))
+            temp = cv2.resize(temp, (200, 200))
             temp = temp[...,::-1].astype(np.float32)
 
             data["predict_label"],data["predict_prob"] = predict(temp)
@@ -57,6 +57,8 @@ def generate_frames():
                 pass
             elif data["predict_label"] == 'del':
                 data["buffer_text"] = data["buffer_text"][:-1]
+            elif data["predict_label"] == 'space':
+                data["buffer_text"] += ' '
             else:
                 data["buffer_text"] += data["predict_label"]
 
@@ -68,7 +70,7 @@ def generate_frames():
         if not success:
             break
         else:
-            cv2.imwrite('static/data/crop.jpg', temp)
+            cv2.imwrite('static/data/img/crop.jpg', temp)
             ret,buffer=cv2.imencode('.jpg',frame)
             frame=buffer.tobytes()
 
