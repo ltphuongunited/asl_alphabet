@@ -14,12 +14,12 @@ start_button = False
 global save_button
 save_button = False
 
-model = keras.models.load_model('best_model.h5')
+model = keras.models.load_model('best_model_new2.h5')
 class_names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'del', 'nothing', 'space']
 
 def generate_frames():
     i = 0
-    counter = 7
+    counter = 6
     global start_button
     while start_button:
         
@@ -27,7 +27,7 @@ def generate_frames():
         success,frame=camera.read()
         i += 1
 
-        if counter == 0: counter = 7
+        if counter == 0: counter = 6
 
         frame = cv2.flip(frame,1)
 
@@ -43,7 +43,7 @@ def generate_frames():
         
         if i % 30 == 0: counter -= 1
         
-        if (i % 210 == 0):
+        if (i % 180 == 0):
             with open("static/data/log.json", "r") as jsonFile:
                 data = json.load(jsonFile)
             print(i)
