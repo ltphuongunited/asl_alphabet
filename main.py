@@ -14,7 +14,7 @@ start_button = False
 global save_button
 save_button = False
 
-model = keras.models.load_model('best_model_new2.h5')
+model = keras.models.load_model('best_model_new3.h5')
 class_names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'del', 'nothing', 'space']
 
 def generate_frames():
