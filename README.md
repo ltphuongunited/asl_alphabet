@@ -17,3 +17,6 @@ python main.py
 ```
 
 ![demo](Capture.PNG)
+
+## Report 
+[Slide](slide.pptx)
