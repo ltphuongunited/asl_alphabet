@@ -16,4 +16,4 @@ Code available at [notebook](train.ipynb)
 python main.py
 ```
 
-![demo](Capture.png)
+![demo](Capture.PNG)
