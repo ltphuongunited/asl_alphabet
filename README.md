@@ -1,5 +1,8 @@
 # ASL alphabet system
 
+## Report 
+[Slide](slide.pptx)
+
 ## Installation instructions
 
 ```
@@ -18,5 +21,4 @@ python main.py
 
 ![demo](Capture.PNG)
 
-## Report 
-[Slide](slide.pptx)
+
