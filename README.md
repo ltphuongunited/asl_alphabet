@@ -16,4 +16,4 @@ Code available at [notebook](train.ipynb)
 python main.py
 ```
 
-![architecture](Capture.png)
+![demo](Capture.png)
